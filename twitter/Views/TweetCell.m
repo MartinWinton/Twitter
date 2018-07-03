@@ -9,6 +9,7 @@
 #import "TweetCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "APIManager.h"
+#import "DateTools.h"
 
 @implementation TweetCell
 
@@ -19,25 +20,48 @@
        [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon-red"] forState : UIControlStateHighlighted];
     
 }
+
+-(void) unfavoriteAndRefresh{
+    
+    self.tweet.favorited = NO;
+    self.tweet.favoriteCount -= 1;
+    [self refreshData];
+    
+    
+    
+    
+}
+
+-(void) favoriteAndRefresh{
+    
+    self.tweet.favorited = YES;
+    self.tweet.favoriteCount += 1;
+    [self refreshData];
+    
+    
+    
+    
+}
 - (IBAction)didTapFavorite:(id)sender {
     
 
     
     if(self.tweet.favorited){
+        
+        [self unfavoriteAndRefresh];
       
         
         [[APIManager shared] unfavorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
             if(error){
                 NSLog(@"Error unfavoriting tweet: %@", error.localizedDescription);
+                [self favoriteAndRefresh];
             }
             else{
                 NSLog(@"Successfully unfavorited the following Tweet: %@", tweet.text);
-                self.tweet.favorited = NO;
-                self.tweet.favoriteCount -= 1;
+             
 
                 
             }
-            [self refreshData];
 
         }];
 
@@ -47,20 +71,20 @@
     }
     
     else{
-
+        
+        [self favoriteAndRefresh];
         
         [[APIManager shared] favorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
             if(error){
                 NSLog(@"Error favoriting tweet: %@", error.localizedDescription);
+                [self unfavoriteAndRefresh];
+
             }
             else{
                 NSLog(@"Successfully favorited the following Tweet: %@", tweet.text);
                 
-                self.tweet.favorited = YES;
-                self.tweet.favoriteCount += 1;
             }
             
-            [self refreshData];
 
         }];
 
@@ -69,23 +93,51 @@
 
 
 }
+
+-(void) unretweetAndRefresh{
+    
+    self.tweet.retweeted = NO;
+    self.tweet.retweetCount -= 1;
+    [self refreshData];
+
+    
+    
+    
+}
+
+-(void) retweetAndRefresh{
+    
+    self.tweet.retweeted = YES;
+    self.tweet.retweetCount += 1;
+    [self refreshData];
+    
+    
+    
+    
+}
+
 - (IBAction)didTapRetweet:(id)sender {
     
     if(self.tweet.retweeted){
+        
+        [self unretweetAndRefresh];
+        
+
 
  
         
         [[APIManager shared] unretweet:self.tweet completion:^(Tweet *tweet, NSError *error) {
             if(error){
                 NSLog(@"Error unretweeting tweet: %@", error.localizedDescription);
+                [self retweetAndRefresh];
+              
+
             }
             else{
                 NSLog(@"Successfully unretweeted the following Tweet: %@", tweet.text);
                 
-                self.tweet.retweeted = NO;
-                self.tweet.retweetCount -= 1;
+             
             }
-            [self refreshData];
 
         }];
 
@@ -95,20 +147,22 @@
     }
     else{
         
+        [self retweetAndRefresh];
+        
      
         
         [[APIManager shared] retweet:self.tweet completion:^(Tweet *tweet, NSError *error) {
             if(error){
                 NSLog(@"Error retweeting tweet: %@", error.localizedDescription);
+                [self unretweetAndRefresh];
+
             }
             else{
                 NSLog(@"Successfully retweeted the following Tweet: %@", tweet.text);
                 
-                self.tweet.retweeted = YES;
-                self.tweet.retweetCount += 1;
+                
                 
             }
-            [self refreshData];
 
         }];
 

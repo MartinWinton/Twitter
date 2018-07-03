@@ -13,7 +13,7 @@
 #import "AppDelegate.h"
 #import "LoginViewController.h"
 
-@interface TimelineViewController ()<UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate>
+@interface TimelineViewController ()<UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate, UIScrollViewDelegate>
 
 @property (nonatomic,strong) NSMutableArray *tweets;
 @property (weak, nonatomic) IBOutlet UITableView *tweetView;
@@ -54,6 +54,7 @@
             
             self.tweets = tweets;
             [self.tweetView reloadData];
+            
        
             
         } else {

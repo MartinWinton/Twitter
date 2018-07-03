@@ -68,8 +68,9 @@ static NSString * const consumerSecret = @"nyjZBxAwgMG2E33XcVPnyYWKLMQeOCPdA8XRI
        if (data != nil) {
            tweetDictionaries = [NSKeyedUnarchiver unarchiveObjectWithData:data];
        }
-       
-       completion(tweetDictionaries, error);
+       NSMutableArray *tweets  = [Tweet tweetsWithArray:tweetDictionaries];
+
+       completion(tweets, error);
    }];
 }
 
