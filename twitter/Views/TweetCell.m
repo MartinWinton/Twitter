@@ -37,6 +37,8 @@
 
                 
             }
+            [self refreshData];
+
         }];
 
 
@@ -57,11 +59,13 @@
                 self.tweet.favorited = YES;
                 self.tweet.favoriteCount += 1;
             }
+            
+            [self refreshData];
+
         }];
 
         
     }
-    [self refreshData];
 
 
 }
@@ -81,6 +85,8 @@
                 self.tweet.retweeted = NO;
                 self.tweet.retweetCount -= 1;
             }
+            [self refreshData];
+
         }];
 
 
@@ -102,6 +108,8 @@
                 self.tweet.retweetCount += 1;
                 
             }
+            [self refreshData];
+
         }];
 
 
@@ -109,7 +117,6 @@
         
     }
     
-    [self refreshData];
 
 }
 
@@ -149,7 +156,8 @@
     if(self.tweet.retweeted){
         
         [self.retweetButton setSelected:YES];
-        self.retweetCount.textColor = [UIColor greenColor];
+
+        self.retweetCount.textColor =  [UIColor colorWithRed:0.10 green:0.81 blue:0.53 alpha:1.0];
 
         
         
