@@ -32,6 +32,7 @@
 		06BF4C3F20EC414700749C50 /* ProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		06BF4C4120ED474D00749C50 /* TweetDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TweetDetailViewController.h; sourceTree = "<group>"; };
 		06BF4C4220ED474D00749C50 /* TweetDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TweetDetailViewController.m; sourceTree = "<group>"; };
+		06F6E68B20EEBD7A00CB3606 /* InfiniteScrollActivityView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InfiniteScrollActivityView.h; sourceTree = "<group>"; };
 		06FB537C20EAC21900D17B87 /* User.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		06FB537D20EAC21900D17B87 /* User.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		06FB537F20EAC29100D17B87 /* Tweet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tweet.h; sourceTree = "<group>"; };
@@ -142,6 +143,7 @@
 			children = (
 				06FB538220EACB0100D17B87 /* TweetCell.h */,
 				06FB538320EACB0100D17B87 /* TweetCell.m */,
+				06F6E68B20EEBD7A00CB3606 /* InfiniteScrollActivityView.h */,
 			);
 			path = Views;
 			sourceTree = "<group>";

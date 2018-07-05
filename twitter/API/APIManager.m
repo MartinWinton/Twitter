@@ -74,6 +74,35 @@ static NSString * const consumerSecret = @"nyjZBxAwgMG2E33XcVPnyYWKLMQeOCPdA8XRI
    }];
 }
 
+- (void)getmoreTweetsWithMaxID:(NSString *)maxID Completion:(void(^)(NSMutableArray *tweets, NSError *error))completion {
+    NSString *urlString = @"1.1/favorites/create.json";
+
+    NSDictionary *parameters = @{@"max_id": maxID};
+
+    [self GET:urlString
+   parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSArray *  _Nullable tweetDictionaries) {
+       
+       // Manually cache the tweets. If the request fails, restore from cache if possible.
+       
+       NSMutableArray *tweets  = [Tweet tweetsWithArray:tweetDictionaries];
+       completion(tweets, nil);
+       
+       
+   } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+       
+       NSMutableArray *tweetDictionaries = nil;
+       
+       // Fetch tweets from cache if possible
+       NSData *data = [[NSUserDefaults standardUserDefaults] valueForKey:@"hometimeline_tweets"];
+       if (data != nil) {
+           tweetDictionaries = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+       }
+       NSMutableArray *tweets  = [Tweet tweetsWithArray:tweetDictionaries];
+       
+       completion(tweets, error);
+   }];
+}
+
 - (void)favorite:(Tweet *)tweet completion:(void (^)(Tweet *, NSError *))completion{
     
     NSString *urlString = @"1.1/favorites/create.json";

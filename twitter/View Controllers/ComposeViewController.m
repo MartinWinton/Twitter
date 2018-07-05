@@ -13,16 +13,22 @@
 @property (weak, nonatomic) IBOutlet UITextView *tweetView;
 @property (weak, nonatomic) IBOutlet UILabel *characterCount;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *tweetButton;
+@property (weak, nonatomic) IBOutlet UILabel *replayTitle;
+@property bool placeholder;
 
 @end
 
 @implementation ComposeViewController
 - (IBAction)clickTweet:(id)sender {
     
+    
     if(self.tweetView.text.length <= 140){
         
         if(self.isReply){
             
+    
+            
+            self.tweetButton.title = @"Reply";
             NSString *replyText = [NSString stringWithFormat:@"%@%@%@%@", @"@", self.replyTweet.user.name, @" ", self.tweetView.text];
             
             [[APIManager shared] postReplyWithText:replyText ID:self.replyTweet.idStr completion:^(Tweet *tweet, NSError *error) {
@@ -81,6 +87,12 @@
     // Do any additional setup after loading the view.
     self.tweetView.delegate = self;
     [_tweetView becomeFirstResponder];
+    
+    self.placeholder = YES;
+    
+    if (self.isReply){
+    self.replayTitle.text = [NSString stringWithFormat:@"%@%@", @"Reply to @", self.replyTweet.user.name];
+    }
 
 }
 
@@ -94,6 +106,10 @@
 
 
 - (void)textViewDidChange:(UITextView *)textView{
+    
+    
+    
+
     
     self.characterCount.text = [NSString stringWithFormat:@"%lu", (unsigned long)140-self.tweetView.text.length];
     

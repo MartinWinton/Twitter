@@ -13,18 +13,25 @@
 #import "AppDelegate.h"
 #import "LoginViewController.h"
 #import "TweetDetailViewController.h"
-
+#import "InfiniteScrollActivityView.h"
 @interface TimelineViewController ()<UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate,TweetDetailViewControllerDelegate, UIScrollViewDelegate>
 
 @property (nonatomic,strong) NSMutableArray *tweets;
 @property (weak, nonatomic) IBOutlet UITableView *tweetView;
 @property (assign, nonatomic) BOOL isMoreDataLoading;
+@property (assign, nonatomic) Tweet *lastTweet;
+
+
+
 
 
 
 @end
 
 @implementation TimelineViewController
+
+InfiniteScrollActivityView* loadingMoreView;
+
 - (IBAction)didLogout:(id)sender {
     
     AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
@@ -42,7 +49,15 @@
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(beginRefresh:) forControlEvents:UIControlEventValueChanged];
     [self.tweetView insertSubview:refreshControl atIndex:0];
-
+    
+    CGRect frame = CGRectMake(0, self.tweetView.contentSize.height, self.tweetView.bounds.size.width, InfiniteScrollActivityView.defaultHeight);
+    loadingMoreView = [[InfiniteScrollActivityView alloc] initWithFrame:frame];
+    loadingMoreView.hidden = true;
+    [self.tweetView addSubview:loadingMoreView];
+    
+    UIEdgeInsets insets = self.tweetView.contentInset;
+    insets.bottom += InfiniteScrollActivityView.defaultHeight;
+    self.tweetView.contentInset = insets;
 
 
     
@@ -57,6 +72,7 @@
             
             self.tweets = tweets;
             [self.tweetView reloadData];
+
             
        
             
@@ -137,11 +153,27 @@
 
 - (void)getMoreData {
     
+    
     // Get timeline
-    [[APIManager shared] getHomeTimelineWithCompletion:^(NSMutableArray *tweets, NSError *error) {
+    
+    self.lastTweet   = [self.tweets objectAtIndex:self.tweets.count-1];
+
+    [[APIManager shared]  getmoreTweetsWithMaxID:(NSString *)self.lastTweet.idStr Completion:^(NSMutableArray *tweets, NSError *error){
         if (tweets) {
             
-            self.tweets = tweets;
+            
+            self.isMoreDataLoading = NO;
+            
+            
+            for(int i = 0; i < tweets.count; i++) {
+                
+                [self.tweets addObject:tweets[i]];
+            }
+            
+            [loadingMoreView stopAnimating];
+
+
+            
             [self.tweetView reloadData];
             
             
@@ -172,6 +204,7 @@
     
         ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
         composeController.delegate = self;
+        composeController.isReply = NO;
         NSLog(@"Compose Segue");
     }
     
@@ -221,6 +254,16 @@
         // When the user has scrolled past the threshold, start requesting
         if(scrollView.contentOffset.y > scrollOffsetThreshold && self.tweetView.isDragging) {
             self.isMoreDataLoading = true;
+            
+            // Update position of loadingMoreView, and start loading indicator
+            CGRect frame = CGRectMake(0, self.tweetView.contentSize.height, self.tweetView.bounds.size.width, InfiniteScrollActivityView.defaultHeight);
+            loadingMoreView.frame = frame;
+            [loadingMoreView startAnimating];
+            
+            [self getMoreData];
+            
+            
+            
             
             // ... Code to load more results ...
         }
