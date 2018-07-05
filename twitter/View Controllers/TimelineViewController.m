@@ -12,11 +12,14 @@
 #import "ComposeViewController.h"
 #import "AppDelegate.h"
 #import "LoginViewController.h"
+#import "TweetDetailViewController.h"
 
-@interface TimelineViewController ()<UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate, UIScrollViewDelegate>
+@interface TimelineViewController ()<UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate,TweetDetailViewControllerDelegate, UIScrollViewDelegate>
 
 @property (nonatomic,strong) NSMutableArray *tweets;
 @property (weak, nonatomic) IBOutlet UITableView *tweetView;
+@property (assign, nonatomic) BOOL isMoreDataLoading;
+
 
 
 @end
@@ -94,20 +97,10 @@
     return cell;
 }
 
-/*
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    return 130;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    return 130;
-}
 
-#pragma mark- Menu table Delegates
- 
-*/
+
+
 
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -142,18 +135,69 @@
 }
 
 
+- (void)getMoreData {
+    
+    // Get timeline
+    [[APIManager shared] getHomeTimelineWithCompletion:^(NSMutableArray *tweets, NSError *error) {
+        if (tweets) {
+            
+            self.tweets = tweets;
+            [self.tweetView reloadData];
+            
+            
+            
+        } else {
+            NSLog(@"😫😫😫 Error getting home timeline: %@", error.localizedDescription);
+        }
+    }];
+    
+    
+}
+
+
+
 
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
     UINavigationController *navigationController = [segue destinationViewController];
-    ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
-    composeController.delegate = self;
-    NSLog(@"Segue");
-
+  
+    
+    
+    
+    
+    if([ navigationController.topViewController isKindOfClass:[ComposeViewController class]]){
+    
+        ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
+        composeController.delegate = self;
+        NSLog(@"Compose Segue");
+    }
+    
+    else if([navigationController.topViewController isKindOfClass:[TweetDetailViewController class]]){
+        
+      
+        TweetDetailViewController *detailController = (TweetDetailViewController*)navigationController.topViewController;
+        NSLog(@"Detail Segue");
+        UITableViewCell *tappedCell = sender;
+        NSIndexPath *indexPath = [self.tweetView indexPathForCell:tappedCell];
+        
+        Tweet *tweet = self.tweets[indexPath.row];
+        detailController.tweet = tweet;
+        detailController.delegate = self;
+        
+    }
+    
+    
 }
 
+- (void)didBack{
+    
+    [self.tweetView reloadData];
+
+    
+}
 - (void)didTweet:(Tweet *)tweet{
     
     NSLog(@"Refeshing!");
@@ -166,6 +210,21 @@
 
     
     
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if(!self.isMoreDataLoading){
+        // Calculate the position of one screen length before the bottom of the results
+        int scrollViewContentHeight = self.tweetView.contentSize.height;
+        int scrollOffsetThreshold = scrollViewContentHeight - self.tweetView.bounds.size.height;
+        
+        // When the user has scrolled past the threshold, start requesting
+        if(scrollView.contentOffset.y > scrollOffsetThreshold && self.tweetView.isDragging) {
+            self.isMoreDataLoading = true;
+            
+            // ... Code to load more results ...
+        }
+    }
 }
 
 

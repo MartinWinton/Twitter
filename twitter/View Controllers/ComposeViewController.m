@@ -11,28 +11,37 @@
 
 @interface ComposeViewController ()<UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextView *tweetView;
+@property (weak, nonatomic) IBOutlet UILabel *characterCount;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *tweetButton;
 
 @end
 
 @implementation ComposeViewController
 - (IBAction)clickTweet:(id)sender {
     
-    
-    
-    [[APIManager shared] postStatusWithText:self.tweetView.text completion:^(Tweet *tweet, NSError *error) {
+    if(self.tweetView.text.length <= 140){
         
-        if(error){
-            NSLog(@"Error tweeting tweet: %@", error.localizedDescription);
-        }
-        else{
+        [[APIManager shared] postStatusWithText:self.tweetView.text completion:^(Tweet *tweet, NSError *error) {
             
+            if(error){
+                NSLog(@"Error tweeting tweet: %@", error.localizedDescription);
+            }
+            else{
+                
+                
+                NSLog(@"Successfully tweeted the following Tweet: %@", tweet.text);
+                [self dismissViewControllerAnimated:true completion:nil];
+                [self.delegate didTweet:tweet];
+                
+            }
+        }];
+        
+    
+    }
+    
+    
+    
 
-            NSLog(@"Successfully tweeted the following Tweet: %@", tweet.text);
-            [self dismissViewControllerAnimated:true completion:nil];
-            [self.delegate didTweet:tweet];
-
-        }
-    }];
 
     
     
@@ -46,7 +55,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.tweetView.delegate = self;
+    [_tweetView becomeFirstResponder];
 
+}
+
+- (NSString*) name {
+    NSLog(@"Returning name: %@", _name);
+    return @"compose";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -54,20 +69,98 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-    // TODO: Check the proposed new text character count
-    // Allow or disallow the new text
+
+
+- (void)textViewDidChange:(UITextView *)textView{
     
-    // Set the max character limit
-    int characterLimit = 140;
+    self.characterCount.text = [NSString stringWithFormat:@"%lu", (unsigned long)140-self.tweetView.text.length];
     
-    // Construct what the new text would be if we allowed the user's latest edit
-    NSString *newText = [self.tweetView.text stringByReplacingCharactersInRange:range withString:text];
     
-    // TODO: Update Character Count Label
+     self.tweetButton.tintColor = [UIColor colorWithRed:0.11 green:0.58 blue:0.88 alpha:1.0];
+
+    if(self.tweetView.text.length >= 120){
+        
+        if(self.tweetView.text.length < 140){
+        
+         self.characterCount.textColor = [UIColor yellowColor];
+        }
+            
+            else{
+                  self.characterCount.textColor = [UIColor redColor];
+                
+                if(self.tweetView.text.length != 140){
+                    
+                    self.characterCount.text= [NSString stringWithFormat:@"%@%@", @"-", [NSString stringWithFormat:@"%lu", self.tweetView.text.length-140]];
+                    
+                    
+                    
+                    
+                }
+                
+             
+                
+                
+                 self.tweetButton.tintColor = [UIColor lightGrayColor];
+                
+            }
+        
+        
     
-    // The new text should be allowed? True/False
-    return newText.length < characterLimit;
+}
+    
+    else{
+        
+        self.characterCount.textColor = [UIColor blackColor];
+
+        
+        
+    }
+    
+    
+    
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView{
+    
+    
+    
+    self.characterCount.text = [NSString stringWithFormat:@"%lu", (unsigned long)140-self.tweetView.text.length];
+    
+      self.tweetButton.tintColor = [UIColor colorWithRed:0.11 green:0.58 blue:0.88 alpha:1.0];
+    
+    if(self.tweetView.text.length >= 120){
+        
+        if(self.tweetView.text.length < 140){
+            
+            self.characterCount.textColor = [UIColor yellowColor];
+        }
+        
+        else{
+            self.characterCount.textColor = [UIColor redColor];
+            
+            if(self.tweetView.text.length != 140){
+                
+                       self.characterCount.text= [NSString stringWithFormat:@"%@%@", @"-", [NSString stringWithFormat:@"%lu", self.tweetView.text.length]];
+                
+                
+           
+                
+            }
+    
+            
+       
+            self.tweetButton.tintColor = [UIColor lightGrayColor];
+        }
+    }
+    
+    else{
+        
+        self.characterCount.textColor = [UIColor blackColor];
+        
+        
+        
+    }
+    
 }
 
 /*

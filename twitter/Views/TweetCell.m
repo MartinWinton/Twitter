@@ -10,9 +10,11 @@
 #import "UIImageView+AFNetworking.h"
 #import "APIManager.h"
 #import "DateTools.h"
+#import "TTTAttributedLabel.h"
 
+@interface TweetCell ()<TTTAttributedLabelDelegate>
+@end
 @implementation TweetCell
-
 - (void)awakeFromNib {
     [super awakeFromNib];
     [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon"] forState : UIControlStateNormal];
@@ -176,9 +178,18 @@
 
 -(void) refreshData {
     
+  
     self.tweetUsername.text = self.tweet.user.name;
     self.tweetLabel.text = self.tweet.text;
-    self.tweetDate.text = self.tweet.createdAtString;
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    // Configure the input format to parse the date string
+    formatter.dateFormat = @"E MMM d HH:mm:ss Z y";
+    // Convert String to Date
+    NSDate *date = [formatter dateFromString:self.tweet.createdAtString];
+    self.tweetDate.text = [NSString stringWithFormat:@"%@%@", @"· ", date.shortTimeAgoSinceNow];
+    
+    
     self.screenName.text = [NSString stringWithFormat:@"%@%@", @"@", self.tweet.user.screenName];
     self.retweetCount.text = [[NSNumber numberWithInt:self.tweet.retweetCount] stringValue];
     self.favorCount.text = [[NSNumber numberWithInt:self.tweet.favoriteCount] stringValue];
@@ -248,14 +259,20 @@
     _tweet = tweet;
     
     [self refreshData];
+}
     
- 
+    - (void)attributedLabel:(TTTAttributedLabel *)label
+didSelectLinkWithURL:(NSURL *)url{
+        
+        
     
+    
+}
     
     
     
 
     
-}
+
 
 @end

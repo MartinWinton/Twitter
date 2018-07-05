@@ -21,7 +21,8 @@ The following **required** functionality is completed:
 
 The following **optional** features are implemented:
 
-- [ ] Tweet Details Page: User can tap on a tweet to view it, with controls to retweet, favorite, and reply.
+- [x] Tweet Details Page: User can tap on a tweet to view it, with controls to retweet, favorite, and reply.
+ (reply not implemented)
 - [ ] User can view their profile in a *profile tab*
 - Contains the user header view: picture and tagline
 - Contains a section with the users basic stats: # tweets, # following, # followers
@@ -33,8 +34,8 @@ The following **optional** features are implemented:
 - Contains the user header view: picture and tagline
 - Contains a section with the users basic stats: # tweets, # following, # followers
 - [ ] User can load more tweets once they reach the bottom of the feed using infinite loading similar to the actual Twitter client.
-- [ ] When composing, you should have a countdown for the number of characters remaining for the tweet (out of 140) (**1 point**)
-- [ ] After creating a new tweet, a user should be able to view it in the timeline immediately without refetching the timeline from the network.
+- [x] When composing, you should have a countdown for the number of characters remaining for the tweet (out of 140) (**1 point**)
+- [x] After creating a new tweet, a user should be able to view it in the timeline immediately without refetching the timeline from the network.
 - [ ] User can reply to any tweet, and replies should be prefixed with the username and the reply_id should be set when posting the tweet (**2 points**)
 - [ ] User sees embedded images in tweet if available 
 - [ ] User can switch between timeline, mentions, or profile view through a tab bar (**3 points**)
@@ -44,6 +45,9 @@ The following **optional** features are implemented:
 The following **additional** features are implemented:
 
 - [x] When favoriting or retweeting tweets, optimistic selection is implemented. For example, when favoriting on a bad connection, the favorte icon and counter update, but switch back if the POST request is not fufilled.
+- [x] Similar to the twitter app, countdown chagnes to yellow if 20 and below and red if 0 and below. Allows users to reach negative number. However, when a red number is reached, Twitter button turns gray and users cannot tweet
+- [x] When favoriting on retweeting on a tweet details page, the timeline page is automatically updated upon return
+- [x] Detail tweet view displays exact time tweet was tweeted
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 

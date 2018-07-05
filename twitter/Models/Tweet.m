@@ -37,14 +37,12 @@
         
         // Format createdAt date string
         NSString *createdAtOriginalString = dictionary[@"created_at"];
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        // Configure the input format to parse the date string
-        formatter.dateFormat = @"E MMM d HH:mm:ss Z y";
-        // Convert String to Date
-        NSDate *date = [formatter dateFromString:createdAtOriginalString];
+        
+        self.createdAtString = createdAtOriginalString;
+   
+        
       
-        // Convert Date to time ago
-        self.createdAtString = date.shortTimeAgoSinceNow;
+  
         
         
         

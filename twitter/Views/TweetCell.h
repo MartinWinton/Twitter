@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Tweet.h"
+#import "TTTAttributedLabel.h"
 
 @interface TweetCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
@@ -21,6 +22,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *retweetButton;
 @property (weak, nonatomic) Tweet *tweet;
 
-@property (weak, nonatomic) IBOutlet UILabel *tweetLabel;
+@property (weak, nonatomic) IBOutlet TTTAttributedLabel *tweetLabel;
 
 @end
