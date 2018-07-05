@@ -412,6 +412,9 @@
                                 <rect key="frame" x="40" y="304" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Message" image="message-icon"/>
+                                <connections>
+                                    <segue destination="blI-fY-GT5" kind="show" id="a6n-4i-41I"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XpQ-P2-QZ1">
                                 <rect key="frame" x="157" y="304" width="30" height="30"/>
@@ -505,4 +508,7 @@
         <image name="retweet-icon-green" width="30" height="30"/>
         <image name="retweet-icon-green-1" width="30" height="30"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="a6n-4i-41I"/>
+    </inferredMetricsTieBreakers>
 </document>

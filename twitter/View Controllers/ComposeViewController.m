@@ -21,22 +21,47 @@
     
     if(self.tweetView.text.length <= 140){
         
-        [[APIManager shared] postStatusWithText:self.tweetView.text completion:^(Tweet *tweet, NSError *error) {
+        if(self.isReply){
             
-            if(error){
-                NSLog(@"Error tweeting tweet: %@", error.localizedDescription);
-            }
-            else{
+            NSString *replyText = [NSString stringWithFormat:@"%@%@%@%@", @"@", self.replyTweet.user.name, @" ", self.tweetView.text];
+            
+            [[APIManager shared] postReplyWithText:replyText ID:self.replyTweet.idStr completion:^(Tweet *tweet, NSError *error) {
                 
+                if(error){
+                    NSLog(@"Error replying to tweet: %@", error.localizedDescription);
+                }
+                else{
+                    
+                    
+                    NSLog(@"Successfully created  the following reply: %@", tweet.text);
+                    [self dismissViewControllerAnimated:true completion:nil];
+                    [self.delegate didTweet:tweet];
+                    
+                }
+            }];
+            
+            
+            
+            
+        }
+        else{
+            [[APIManager shared] postStatusWithText:self.tweetView.text completion:^(Tweet *tweet, NSError *error) {
                 
-                NSLog(@"Successfully tweeted the following Tweet: %@", tweet.text);
-                [self dismissViewControllerAnimated:true completion:nil];
-                [self.delegate didTweet:tweet];
-                
-            }
-        }];
-        
-    
+                if(error){
+                    NSLog(@"Error tweeting tweet: %@", error.localizedDescription);
+                }
+                else{
+                    
+                    
+                    NSLog(@"Successfully tweeted the following Tweet: %@", tweet.text);
+                    [self dismissViewControllerAnimated:true completion:nil];
+                    [self.delegate didTweet:tweet];
+                    
+                }
+            }];
+            
+            
+        }
     }
     
     
@@ -59,10 +84,7 @@
 
 }
 
-- (NSString*) name {
-    NSLog(@"Returning name: %@", _name);
-    return @"compose";
-}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -94,13 +116,15 @@
                     
                     
                     
+                    self.tweetButton.tintColor = [UIColor lightGrayColor];
+                    
+                    
+                    
                     
                 }
                 
              
-                
-                
-                 self.tweetButton.tintColor = [UIColor lightGrayColor];
+             
                 
             }
         
@@ -141,6 +165,8 @@
             if(self.tweetView.text.length != 140){
                 
                        self.characterCount.text= [NSString stringWithFormat:@"%@%@", @"-", [NSString stringWithFormat:@"%lu", self.tweetView.text.length]];
+                self.tweetButton.tintColor = [UIColor lightGrayColor];
+
                 
                 
            
@@ -149,7 +175,6 @@
     
             
        
-            self.tweetButton.tintColor = [UIColor lightGrayColor];
         }
     }
     

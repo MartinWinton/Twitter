@@ -20,7 +20,7 @@
 
 
 @property (weak, nonatomic) Tweet *tweet;
-@property (weak, nonatomic) NSString *name;
+
 @property (nonatomic, weak) id<TweetDetailViewControllerDelegate> delegate;
 
 

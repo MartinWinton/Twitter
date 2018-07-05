@@ -18,7 +18,8 @@
 @interface ComposeViewController : UIViewController
 
 @property (nonatomic, weak) id<ComposeViewControllerDelegate> delegate;
-@property (weak, nonatomic) NSString *name;
+@property   (nonatomic, weak) Tweet *replyTweet;
+@property BOOL isReply;
 
 
 
