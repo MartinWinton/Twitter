@@ -11,6 +11,7 @@
 #import "APIManager.h"
 #import "DateTools.h"
 #import "TTTAttributedLabel.h"
+#import "NumberFormatter.h"
 
 @interface TweetCell ()<TTTAttributedLabelDelegate>
 @end
@@ -173,12 +174,12 @@
         
     }
     
-
+    
 }
 
 -(void) refreshData {
     
-  
+    
     self.tweetUsername.text = self.tweet.user.name;
     self.tweetLabel.text = self.tweet.text;
     
@@ -191,8 +192,10 @@
     
     
     self.screenName.text = [NSString stringWithFormat:@"%@%@", @"@", self.tweet.user.screenName];
-    self.retweetCount.text = [[NSNumber numberWithInt:self.tweet.retweetCount] stringValue];
-    self.favorCount.text = [[NSNumber numberWithInt:self.tweet.favoriteCount] stringValue];
+    
+    
+    self.retweetCount.text = [NumberFormatter suffixNumber:[NSNumber numberWithInt:self.tweet.retweetCount]];
+     self.favorCount.text = [NumberFormatter suffixNumber:[NSNumber numberWithInt:self.tweet.favoriteCount]];
     
     self.profileImage.image = nil;
     if (self.tweet.user.profileImageURL != nil) {
@@ -203,8 +206,8 @@
         
         [self.favoriteButton setSelected:YES];
         self.favorCount.textColor = [UIColor redColor];
-
-
+        
+        
         
     }
     
@@ -212,8 +215,8 @@
         
         [self.favoriteButton setSelected:NO];
         self.favorCount.textColor = [UIColor lightGrayColor];
-
-
+        
+        
         
         
     }
@@ -221,9 +224,9 @@
     if(self.tweet.retweeted){
         
         [self.retweetButton setSelected:YES];
-
+        
         self.retweetCount.textColor =  [UIColor colorWithRed:0.10 green:0.81 blue:0.53 alpha:1.0];
-
+        
         
         
     }
@@ -232,16 +235,16 @@
         
         [self.retweetButton setSelected:NO];
         self.retweetCount.textColor = [UIColor lightGrayColor];
-
+        
         
         
     }
-        
-     
-  
-      
-
-    }
+    
+    
+    
+    
+    
+}
     
     
 

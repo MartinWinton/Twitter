@@ -10,6 +10,8 @@
 		06BF4C3D20EBE56200749C50 /* ComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06BF4C3C20EBE56200749C50 /* ComposeViewController.m */; };
 		06BF4C4020EC414700749C50 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06BF4C3F20EC414700749C50 /* ProfileViewController.m */; };
 		06BF4C4320ED474D00749C50 /* TweetDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06BF4C4220ED474D00749C50 /* TweetDetailViewController.m */; };
+		06F6E69020EEC5ED00CB3606 /* ProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 06F6E68F20EEC5ED00CB3606 /* ProfileCell.m */; };
+		06F6E69720EF0ECB00CB3606 /* NumberFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 06F6E69620EF0ECB00CB3606 /* NumberFormatter.m */; };
 		06FB537E20EAC21900D17B87 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 06FB537D20EAC21900D17B87 /* User.m */; };
 		06FB538120EAC29100D17B87 /* Tweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 06FB538020EAC29100D17B87 /* Tweet.m */; };
 		06FB538420EACB0100D17B87 /* TweetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 06FB538320EACB0100D17B87 /* TweetCell.m */; };
@@ -33,6 +35,10 @@
 		06BF4C4120ED474D00749C50 /* TweetDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TweetDetailViewController.h; sourceTree = "<group>"; };
 		06BF4C4220ED474D00749C50 /* TweetDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TweetDetailViewController.m; sourceTree = "<group>"; };
 		06F6E68B20EEBD7A00CB3606 /* InfiniteScrollActivityView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InfiniteScrollActivityView.h; sourceTree = "<group>"; };
+		06F6E68E20EEC5ED00CB3606 /* ProfileCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileCell.h; sourceTree = "<group>"; };
+		06F6E68F20EEC5ED00CB3606 /* ProfileCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileCell.m; sourceTree = "<group>"; };
+		06F6E69520EF0ECB00CB3606 /* NumberFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NumberFormatter.h; sourceTree = "<group>"; };
+		06F6E69620EF0ECB00CB3606 /* NumberFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NumberFormatter.m; sourceTree = "<group>"; };
 		06FB537C20EAC21900D17B87 /* User.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		06FB537D20EAC21900D17B87 /* User.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		06FB537F20EAC29100D17B87 /* Tweet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tweet.h; sourceTree = "<group>"; };
@@ -80,6 +86,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		06F6E69120EF0E5100CB3606 /* Helper Modules */ = {
+			isa = PBXGroup;
+			children = (
+				06F6E69520EF0ECB00CB3606 /* NumberFormatter.h */,
+				06F6E69620EF0ECB00CB3606 /* NumberFormatter.m */,
+			);
+			path = "Helper Modules";
+			sourceTree = "<group>";
+		};
 		6AD278CC20BC4B950085BC29 = {
 			isa = PBXGroup;
 			children = (
@@ -101,6 +116,7 @@
 		6AD278D720BC4B950085BC29 /* twitter */ = {
 			isa = PBXGroup;
 			children = (
+				06F6E69120EF0E5100CB3606 /* Helper Modules */,
 				6AD2790320BCC01B0085BC29 /* View Controllers */,
 				6AD278FF20BCBF280085BC29 /* Views */,
 				6AD278F720BCB6900085BC29 /* API */,
@@ -144,6 +160,8 @@
 				06FB538220EACB0100D17B87 /* TweetCell.h */,
 				06FB538320EACB0100D17B87 /* TweetCell.m */,
 				06F6E68B20EEBD7A00CB3606 /* InfiniteScrollActivityView.h */,
+				06F6E68E20EEC5ED00CB3606 /* ProfileCell.h */,
+				06F6E68F20EEC5ED00CB3606 /* ProfileCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -300,7 +318,9 @@
 				06FB538120EAC29100D17B87 /* Tweet.m in Sources */,
 				6AD2790620BCC0380085BC29 /* LoginViewController.m in Sources */,
 				6AD278DA20BC4B950085BC29 /* AppDelegate.m in Sources */,
+				06F6E69020EEC5ED00CB3606 /* ProfileCell.m in Sources */,
 				06BF4C4020EC414700749C50 /* ProfileViewController.m in Sources */,
+				06F6E69720EF0ECB00CB3606 /* NumberFormatter.m in Sources */,
 				6AD278F620BCB68B0085BC29 /* APIManager.m in Sources */,
 				6AD2790920BCC04D0085BC29 /* TimelineViewController.m in Sources */,
 			);

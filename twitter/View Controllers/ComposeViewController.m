@@ -28,7 +28,6 @@
             
     
             
-            self.tweetButton.title = @"Reply";
             NSString *replyText = [NSString stringWithFormat:@"%@%@%@%@", @"@", self.replyTweet.user.name, @" ", self.tweetView.text];
             
             [[APIManager shared] postReplyWithText:replyText ID:self.replyTweet.idStr completion:^(Tweet *tweet, NSError *error) {
@@ -92,6 +91,8 @@
     
     if (self.isReply){
     self.replayTitle.text = [NSString stringWithFormat:@"%@%@", @"Reply to @", self.replyTweet.user.name];
+        self.tweetButton.title = @"Reply";
+
     }
 
 }

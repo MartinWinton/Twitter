@@ -11,6 +11,8 @@
 #import "TTTAttributedLabel.h"
 #import "APIManager.h"
 #import "ComposeViewController.h"
+#import "ProfileViewController.h"
+#import "NumberFormatter.h"
 
 
 
@@ -68,8 +70,11 @@
 -(void)refreshData{
     
     
-    self.numretweets.text = [[NSNumber numberWithInt:self.tweet.retweetCount] stringValue];
-    self.numfavs.text = [[NSNumber numberWithInt:self.tweet.favoriteCount] stringValue];
+
+    
+    self.numretweets.text = [NumberFormatter suffixNumber:[NSNumber numberWithInt:self.tweet.retweetCount]];
+    self.numfavs.text = [NumberFormatter suffixNumber:[NSNumber numberWithInt:self.tweet.favoriteCount]];
+    
     
     
     if(self.tweet.favorited){
@@ -294,10 +299,25 @@
     
         UINavigationController *navigationController = [segue destinationViewController];
     
-    ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
-    composeController.delegate = self;
-    composeController.isReply = YES;
-    composeController.replyTweet = self.tweet;
+    if([ navigationController.topViewController isKindOfClass:[ComposeViewController class]]){
+        
+        ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
+        composeController.delegate = self;
+        composeController.isReply = YES;
+        composeController.replyTweet = self.tweet;
+
+        NSLog(@"Compose Segue");
+    }
+    
+    else if([navigationController.topViewController isKindOfClass:[ProfileViewController class]]){
+        
+        
+        ProfileViewController *detailController = (ProfileViewController*)navigationController.topViewController;
+    
+        detailController.user = self.tweet.user;
+        detailController.didClick = true;
+        
+    }
     
  
 }

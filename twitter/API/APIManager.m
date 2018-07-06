@@ -48,6 +48,46 @@ static NSString * const consumerSecret = @"nyjZBxAwgMG2E33XcVPnyYWKLMQeOCPdA8XRI
     return self;
 }
 
+- (void)getMainUserWithCompletion:(void (^)(User *, NSError *))completion{
+    
+    NSString *urlString = @"1.1/account/verify_credentials.json";
+    [self GET:urlString
+   parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary *  _Nullable userDictionary) {
+       
+        User *user = [[User alloc] initWithDictionary:userDictionary];
+        completion(user, nil);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion(nil, error);
+    }];
+    
+    
+}
+
+
+    
+    
+    
+
+
+
+- (void)getUserTimelineFromUser:(User *)user withCompletion:(void (^)(NSMutableArray *tweets, NSError *))completion{
+    
+    NSString *urlString = @"1.1/statuses/user_timeline.json";
+    NSDictionary *parameters = @{@"screen_name": user.screenName};
+    
+    
+
+    [self GET:urlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSArray *  _Nullable tweetDictionaries) {
+        NSMutableArray *tweets  = [Tweet tweetsWithArray:tweetDictionaries];
+        completion(tweets, nil);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion(nil, error);
+    }];
+    
+    
+}
+
+
 - (void)getHomeTimelineWithCompletion:(void(^)(NSMutableArray *tweets, NSError *error))completion {
     
     [self GET:@"1.1/statuses/home_timeline.json"

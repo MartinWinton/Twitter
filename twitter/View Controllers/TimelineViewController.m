@@ -14,6 +14,7 @@
 #import "LoginViewController.h"
 #import "TweetDetailViewController.h"
 #import "InfiniteScrollActivityView.h"
+#import "ProfileViewController.h"
 @interface TimelineViewController ()<UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate,TweetDetailViewControllerDelegate, UIScrollViewDelegate>
 
 @property (nonatomic,strong) NSMutableArray *tweets;
@@ -219,6 +220,21 @@ InfiniteScrollActivityView* loadingMoreView;
         Tweet *tweet = self.tweets[indexPath.row];
         detailController.tweet = tweet;
         detailController.delegate = self;
+        
+    }
+    
+    else if([navigationController.topViewController isKindOfClass:[ProfileViewController class]]){
+        
+        
+        ProfileViewController *detailController = (ProfileViewController*)navigationController.topViewController;
+        UITableViewCell *tappedCell = sender;
+        NSIndexPath *indexPath = [self.tweetView indexPathForCell:tappedCell];
+        
+        
+        Tweet *tweet = self.tweets[indexPath.row];
+
+        detailController.user = tweet.user;
+        detailController.didClick = true;
         
     }
     

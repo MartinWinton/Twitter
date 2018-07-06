@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "User.h"
 
 @interface ProfileViewController : UIViewController
+@property (weak, nonatomic) User *user;
+@property BOOL didClick;
+
 
 @end
