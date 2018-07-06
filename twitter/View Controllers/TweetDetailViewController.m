@@ -13,11 +13,12 @@
 #import "ComposeViewController.h"
 #import "ProfileViewController.h"
 #import "NumberFormatter.h"
+#import "FavoriteRetweetHelper.h"
 
 
 
 
-@interface TweetDetailViewController () <ComposeViewControllerDelegate>
+@interface TweetDetailViewController () <ComposeViewControllerDelegate, FavoriteRetweetHelperDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *tweetUsernameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *tweetPic;
 @property (weak, nonatomic) IBOutlet UILabel *tweetScreen;
@@ -27,6 +28,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *numretweets;
 @property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
 @property (weak, nonatomic) IBOutlet UIButton *retweetButton;
+@property (nonatomic,strong)  FavoriteRetweetHelper *helper;
+
 
 @end
 
@@ -35,16 +38,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.helper = [[FavoriteRetweetHelper alloc] initWithTweet:self.tweet];
+    self.helper.delegate = self;
+    
+    
     [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon"] forState : UIControlStateNormal];
     [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon-red"] forState : UIControlStateSelected];
     [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon-red"] forState : UIControlStateHighlighted];
     
-   
+    
     
     self.tweetUsernameLabel.text = self.tweet.user.name;
     
     self.tweetBody.text = self.tweet.text;
     self.tweetScreen.text = [NSString stringWithFormat:@"%@%@", @"@", self.tweet.user.screenName];
+    
+    
+    
+    self.tweetPic.layer.cornerRadius = self.tweetPic.frame.size.width/2;
+    self.tweetPic.clipsToBounds = YES;
+    
     self.tweetPic.image = nil;
     if (self.tweet.user.profileImageURL != nil) {
         [self.tweetPic setImageWithURL:self.tweet.user.profileImageURL];
@@ -60,7 +73,7 @@
     formatter.timeStyle = NSDateFormatterShortStyle;
     
     self.tweetTime.text = [formatter stringFromDate:date];
-
+    
     [self refreshData];
     
     // Do any additional setup after loading the view.
@@ -69,28 +82,17 @@
 
 -(void)refreshData{
     
-    
-
-    
     self.numretweets.text = [NumberFormatter suffixNumber:[NSNumber numberWithInt:self.tweet.retweetCount]];
     self.numfavs.text = [NumberFormatter suffixNumber:[NSNumber numberWithInt:self.tweet.favoriteCount]];
-    
-    
-    
+
     if(self.tweet.favorited){
         
         [self.favoriteButton setSelected:YES];
-     
-        
-        
         
     }
-    
     else{
         
         [self.favoriteButton setSelected:NO];
-        
-        
         
         
     }
@@ -100,8 +102,6 @@
         [self.retweetButton setSelected:YES];
         
         
-        
-        
     }
     
     else{
@@ -109,13 +109,7 @@
         [self.retweetButton setSelected:NO];
         
         
-        
-        
     }
-    
-    
-    
-    
     
     
 }
@@ -123,162 +117,25 @@
 - (IBAction)clickBack:(id)sender {
     [self dismissViewControllerAnimated:true completion:nil];
     [self.delegate didBack];
-
-
-}
-
-
--(void) unfavoriteAndRefresh{
-    
-    self.tweet.favorited = NO;
-    self.tweet.favoriteCount -= 1;
-    [self refreshData];
-    
-    
     
     
 }
 
--(void) favoriteAndRefresh{
-    
-    self.tweet.favorited = YES;
-    self.tweet.favoriteCount += 1;
-    [self refreshData];
-    
-    
-    
-    
-}
+
+
 - (IBAction)didTapFavorite:(id)sender {
     
-    if(self.tweet.favorited){
-        
-        [self unfavoriteAndRefresh];
-        
-        
-        [[APIManager shared] unfavorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
-            if(error){
-                NSLog(@"Error unfavoriting tweet: %@", error.localizedDescription);
-                [self favoriteAndRefresh];
-            }
-            else{
-                NSLog(@"Successfully unfavorited the following Tweet: %@", tweet.text);
-                
-                
-                
-            }
-            
-        }];
-        
-        
-        
-        
-    }
-    
-    else{
-        
-        [self favoriteAndRefresh];
-        
-        [[APIManager shared] favorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
-            if(error){
-                NSLog(@"Error favoriting tweet: %@", error.localizedDescription);
-                [self unfavoriteAndRefresh];
-                
-            }
-            else{
-                NSLog(@"Successfully favorited the following Tweet: %@", tweet.text);
-                
-            }
-            
-            
-        }];
-        
-        
-    }
+    [self.helper toggleFavorite];
+    [self refreshData];
+
 }
 - (IBAction)didTapRetweet:(id)sender {
     
-    
-    
-    if(self.tweet.retweeted){
-        
-        [self unretweetAndRefresh];
-        
-        
-        
-        
-        
-        [[APIManager shared] unretweet:self.tweet completion:^(Tweet *tweet, NSError *error) {
-            if(error){
-                NSLog(@"Error unretweeting tweet: %@", error.localizedDescription);
-                [self retweetAndRefresh];
-                
-                
-            }
-            else{
-                NSLog(@"Successfully unretweeted the following Tweet: %@", tweet.text);
-                
-                
-            }
-            
-        }];
-        
-        
-        
-        
-    }
-    else{
-        
-        [self retweetAndRefresh];
-        
-        
-        
-        [[APIManager shared] retweet:self.tweet completion:^(Tweet *tweet, NSError *error) {
-            if(error){
-                NSLog(@"Error retweeting tweet: %@", error.localizedDescription);
-                [self unretweetAndRefresh];
-                
-            }
-            else{
-                NSLog(@"Successfully retweeted the following Tweet: %@", tweet.text);
-                
-                
-                
-            }
-            
-        }];
-        
-        
-        
-        
-    }
-    
-    
-    
+    [self.helper toggleRetweet];
+    [self refreshData];
     
 }
 
--(void) unretweetAndRefresh{
-    
-    self.tweet.retweeted = NO;
-    self.tweet.retweetCount -= 1;
-    [self refreshData];
-    
-    
-    
-    
-}
-
--(void) retweetAndRefresh{
-    
-    self.tweet.retweeted = YES;
-    self.tweet.retweetCount += 1;
-    [self refreshData];
-    
-    
-    
-    
-}
 
 
 - (void)didReceiveMemoryWarning {
@@ -287,6 +144,48 @@
 }
 
 -(void)didTweet:(Tweet *)tweet{
+    
+    [self refreshData];
+    
+    
+}
+
+
+- (void)didFailFavorite {
+    
+    if(self.tweet.favorited){
+        
+        self.tweet.favorited = NO;
+        self.tweet.favoriteCount -= 1;
+    }
+    
+    else{
+        
+        self.tweet.favorited = YES;
+        self.tweet.favoriteCount += 1;
+    }
+    
+    [self refreshData];
+    
+    
+    
+}
+
+- (void)didFailRetweet {
+    
+    if(self.tweet.retweeted){
+        
+        self.tweet.retweeted = NO;
+        self.tweet.retweetCount -= 1;
+    }
+    
+    else{
+        
+        self.tweet.retweeted = YES;
+        self.tweet.retweetCount += 1;
+    }
+    
+    [self refreshData];
     
     
 }
@@ -297,7 +196,7 @@
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
-        UINavigationController *navigationController = [segue destinationViewController];
+    UINavigationController *navigationController = [segue destinationViewController];
     
     if([ navigationController.topViewController isKindOfClass:[ComposeViewController class]]){
         
@@ -305,7 +204,7 @@
         composeController.delegate = self;
         composeController.isReply = YES;
         composeController.replyTweet = self.tweet;
-
+        
         NSLog(@"Compose Segue");
     }
     
@@ -313,14 +212,15 @@
         
         
         ProfileViewController *detailController = (ProfileViewController*)navigationController.topViewController;
-    
+        
         detailController.user = self.tweet.user;
         detailController.didClick = true;
         
     }
     
- 
+    
 }
 
 
 @end
+

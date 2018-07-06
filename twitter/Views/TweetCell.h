@@ -10,6 +10,12 @@
 #import "Tweet.h"
 #import "TTTAttributedLabel.h"
 
+@protocol TweetCellDelegate
+
+- (Tweet*)getTweet:(Tweet *)tweet;
+
+@end
+
 @interface TweetCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
 @property (weak, nonatomic) IBOutlet UILabel *tweetUsername;
@@ -23,5 +29,11 @@
 @property (weak, nonatomic) Tweet *tweet;
 
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *tweetLabel;
+@property (weak, nonatomic) IBOutlet UIButton *profileButton;
+
+@property (nonatomic, weak) id<TweetCellDelegate> delegate;
+
+
+
 
 @end

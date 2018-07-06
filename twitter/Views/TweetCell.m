@@ -12,167 +12,50 @@
 #import "DateTools.h"
 #import "TTTAttributedLabel.h"
 #import "NumberFormatter.h"
+#import "FavoriteRetweetHelper.h"
+#import "ProfileViewController.h"
 
-@interface TweetCell ()<TTTAttributedLabelDelegate>
+@interface TweetCell ()<FavoriteRetweetHelperDelegate>
+@property (weak, nonatomic) IBOutlet UILabel *retweetedByLabel;
+@property (nonatomic,strong)  FavoriteRetweetHelper *helper;
+
 @end
 @implementation TweetCell
+- (IBAction)didtap:(id)sender {
+}
 - (void)awakeFromNib {
     [super awakeFromNib];
     [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon"] forState : UIControlStateNormal];
     [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon-red"] forState : UIControlStateSelected];
        [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon-red"] forState : UIControlStateHighlighted];
     
-}
-
--(void) unfavoriteAndRefresh{
-    
-    self.tweet.favorited = NO;
-    self.tweet.favoriteCount -= 1;
-    [self refreshData];
     
     
     
     
 }
 
--(void) favoriteAndRefresh{
-    
-    self.tweet.favorited = YES;
-    self.tweet.favoriteCount += 1;
-    [self refreshData];
-    
-    
-    
-    
+- (IBAction)didTapButton:(id)sender {
+    [self.delegate getTweet:self.tweet];
 }
+
+
+
 - (IBAction)didTapFavorite:(id)sender {
     
-
     
-    if(self.tweet.favorited){
-        
-        [self unfavoriteAndRefresh];
-      
-        
-        [[APIManager shared] unfavorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
-            if(error){
-                NSLog(@"Error unfavoriting tweet: %@", error.localizedDescription);
-                [self favoriteAndRefresh];
-            }
-            else{
-                NSLog(@"Successfully unfavorited the following Tweet: %@", tweet.text);
-             
-
-                
-            }
-
-        }];
-
-
-        
-        
-    }
+    [self.helper toggleFavorite];
     
-    else{
-        
-        [self favoriteAndRefresh];
-        
-        [[APIManager shared] favorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
-            if(error){
-                NSLog(@"Error favoriting tweet: %@", error.localizedDescription);
-                [self unfavoriteAndRefresh];
-
-            }
-            else{
-                NSLog(@"Successfully favorited the following Tweet: %@", tweet.text);
-                
-            }
-            
-
-        }];
-
-        
-    }
-
-
-}
-
--(void) unretweetAndRefresh{
-    
-    self.tweet.retweeted = NO;
-    self.tweet.retweetCount -= 1;
-    [self refreshData];
-
-    
-    
-    
-}
-
--(void) retweetAndRefresh{
-    
-    self.tweet.retweeted = YES;
-    self.tweet.retweetCount += 1;
     [self refreshData];
     
-    
-    
-    
 }
+
 
 - (IBAction)didTapRetweet:(id)sender {
     
-    if(self.tweet.retweeted){
-        
-        [self unretweetAndRefresh];
-        
-
-
- 
-        
-        [[APIManager shared] unretweet:self.tweet completion:^(Tweet *tweet, NSError *error) {
-            if(error){
-                NSLog(@"Error unretweeting tweet: %@", error.localizedDescription);
-                [self retweetAndRefresh];
-              
-
-            }
-            else{
-                NSLog(@"Successfully unretweeted the following Tweet: %@", tweet.text);
-                
-             
-            }
-
-        }];
-
-
-        
-        
-    }
-    else{
-        
-        [self retweetAndRefresh];
-        
-     
-        
-        [[APIManager shared] retweet:self.tweet completion:^(Tweet *tweet, NSError *error) {
-            if(error){
-                NSLog(@"Error retweeting tweet: %@", error.localizedDescription);
-                [self unretweetAndRefresh];
-
-            }
-            else{
-                NSLog(@"Successfully retweeted the following Tweet: %@", tweet.text);
-                
-                
-                
-            }
-
-        }];
-
-
-        
-        
-    }
+    [self.helper toggleRetweet];
+    
+    [self refreshData];
     
     
 }
@@ -193,11 +76,21 @@
     
     self.screenName.text = [NSString stringWithFormat:@"%@%@", @"@", self.tweet.user.screenName];
     
+    if(self.tweet.retweetedByUser != nil){
+        self.retweetedByLabel.text= [NSString stringWithFormat:@"%@%@", self.tweet.retweetedByUser.name, @" Retweeted"];
+        
+      
+        
+    }
+    
     
     self.retweetCount.text = [NumberFormatter suffixNumber:[NSNumber numberWithInt:self.tweet.retweetCount]];
      self.favorCount.text = [NumberFormatter suffixNumber:[NSNumber numberWithInt:self.tweet.favoriteCount]];
     
     self.profileImage.image = nil;
+    self.profileImage.layer.cornerRadius = self.profileImage.frame.size.width/2;
+    self.profileImage.clipsToBounds = YES;
+    
     if (self.tweet.user.profileImageURL != nil) {
         [self.profileImage setImageWithURL:self.tweet.user.profileImageURL];
     }
@@ -261,21 +154,57 @@
     // You need to do this any time you create a custom setter.
     _tweet = tweet;
     
+    self.helper = [[FavoriteRetweetHelper alloc] initWithTweet:self.tweet];
+    self.helper.delegate = self;
+    
+    
     [self refreshData];
 }
     
-    - (void)attributedLabel:(TTTAttributedLabel *)label
-didSelectLinkWithURL:(NSURL *)url{
+
+
+
+- (void)didFailFavorite {
+    
+    if(self.tweet.favorited){
         
+        self.tweet.favorited = NO;
+        self.tweet.favoriteCount -= 1;
+    }
+    
+    else{
         
+        self.tweet.favorited = YES;
+        self.tweet.favoriteCount += 1;
+    }
+    
+    [self refreshData];
+    
     
     
 }
+
+- (void)didFailRetweet {
     
+    if(self.tweet.retweeted){
+        
+        self.tweet.retweeted = NO;
+        self.tweet.retweetCount -= 1;
+    }
     
+    else{
+        
+        self.tweet.retweeted = YES;
+        self.tweet.retweetCount += 1;
+    }
     
+    [self refreshData];
 
     
+}
+
+
+
 
 
 @end

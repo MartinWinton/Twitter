@@ -41,6 +41,10 @@
     
     self.numFollowers.text = self.user.followersCountString;
     
+    self.tweetProfile.layer.cornerRadius = self.tweetProfile.frame.size.width/2;
+    self.tweetProfile.clipsToBounds = YES;
+    self.tweetProfile.layer.borderWidth = 1.5f;
+    self.tweetProfile.layer.borderColor = [UIColor whiteColor].CGColor;
     self.tweetProfile.image = nil;
     if (self.user.profileImageURL != nil) {
         [self.tweetProfile setImageWithURL:self.user.profileImageURL];

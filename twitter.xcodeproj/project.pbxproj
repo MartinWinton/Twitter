@@ -12,6 +12,7 @@
 		06BF4C4320ED474D00749C50 /* TweetDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06BF4C4220ED474D00749C50 /* TweetDetailViewController.m */; };
 		06F6E69020EEC5ED00CB3606 /* ProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 06F6E68F20EEC5ED00CB3606 /* ProfileCell.m */; };
 		06F6E69720EF0ECB00CB3606 /* NumberFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 06F6E69620EF0ECB00CB3606 /* NumberFormatter.m */; };
+		06F6E69A20F0065B00CB3606 /* FavoriteRetweetHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 06F6E69920F0065B00CB3606 /* FavoriteRetweetHelper.m */; };
 		06FB537E20EAC21900D17B87 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 06FB537D20EAC21900D17B87 /* User.m */; };
 		06FB538120EAC29100D17B87 /* Tweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 06FB538020EAC29100D17B87 /* Tweet.m */; };
 		06FB538420EACB0100D17B87 /* TweetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 06FB538320EACB0100D17B87 /* TweetCell.m */; };
@@ -39,6 +40,8 @@
 		06F6E68F20EEC5ED00CB3606 /* ProfileCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileCell.m; sourceTree = "<group>"; };
 		06F6E69520EF0ECB00CB3606 /* NumberFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NumberFormatter.h; sourceTree = "<group>"; };
 		06F6E69620EF0ECB00CB3606 /* NumberFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NumberFormatter.m; sourceTree = "<group>"; };
+		06F6E69820F0065B00CB3606 /* FavoriteRetweetHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FavoriteRetweetHelper.h; sourceTree = "<group>"; };
+		06F6E69920F0065B00CB3606 /* FavoriteRetweetHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FavoriteRetweetHelper.m; sourceTree = "<group>"; };
 		06FB537C20EAC21900D17B87 /* User.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		06FB537D20EAC21900D17B87 /* User.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		06FB537F20EAC29100D17B87 /* Tweet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tweet.h; sourceTree = "<group>"; };
@@ -91,6 +94,8 @@
 			children = (
 				06F6E69520EF0ECB00CB3606 /* NumberFormatter.h */,
 				06F6E69620EF0ECB00CB3606 /* NumberFormatter.m */,
+				06F6E69820F0065B00CB3606 /* FavoriteRetweetHelper.h */,
+				06F6E69920F0065B00CB3606 /* FavoriteRetweetHelper.m */,
 			);
 			path = "Helper Modules";
 			sourceTree = "<group>";
@@ -321,6 +326,7 @@
 				06F6E69020EEC5ED00CB3606 /* ProfileCell.m in Sources */,
 				06BF4C4020EC414700749C50 /* ProfileViewController.m in Sources */,
 				06F6E69720EF0ECB00CB3606 /* NumberFormatter.m in Sources */,
+				06F6E69A20F0065B00CB3606 /* FavoriteRetweetHelper.m in Sources */,
 				6AD278F620BCB68B0085BC29 /* APIManager.m in Sources */,
 				6AD2790920BCC04D0085BC29 /* TimelineViewController.m in Sources */,
 			);

@@ -15,12 +15,14 @@
 #import "TweetDetailViewController.h"
 #import "InfiniteScrollActivityView.h"
 #import "ProfileViewController.h"
-@interface TimelineViewController ()<UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate,TweetDetailViewControllerDelegate, UIScrollViewDelegate>
+@interface TimelineViewController ()<UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate,TweetDetailViewControllerDelegate,TweetCellDelegate, UIScrollViewDelegate>
 
 @property (nonatomic,strong) NSMutableArray *tweets;
 @property (weak, nonatomic) IBOutlet UITableView *tweetView;
 @property (assign, nonatomic) BOOL isMoreDataLoading;
 @property (assign, nonatomic) Tweet *lastTweet;
+@property (assign, nonatomic) Tweet *cellTweet;
+
 
 
 
@@ -100,12 +102,14 @@ InfiniteScrollActivityView* loadingMoreView;
     
     TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetCell"];
     
-    
+    cell.delegate = self;
     
     
     Tweet *tweet  = self.tweets[indexPath.row];
     
     cell.tweet = tweet;
+    
+    
     
 
     
@@ -195,6 +199,8 @@ InfiniteScrollActivityView* loadingMoreView;
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
+    
+    
     UINavigationController *navigationController = [segue destinationViewController];
   
     
@@ -217,7 +223,12 @@ InfiniteScrollActivityView* loadingMoreView;
         UITableViewCell *tappedCell = sender;
         NSIndexPath *indexPath = [self.tweetView indexPathForCell:tappedCell];
         
+        
+        
         Tweet *tweet = self.tweets[indexPath.row];
+        
+        
+        
         detailController.tweet = tweet;
         detailController.delegate = self;
         
@@ -227,19 +238,23 @@ InfiniteScrollActivityView* loadingMoreView;
         
         
         ProfileViewController *detailController = (ProfileViewController*)navigationController.topViewController;
-        UITableViewCell *tappedCell = sender;
-        NSIndexPath *indexPath = [self.tweetView indexPathForCell:tappedCell];
         
-        
-        Tweet *tweet = self.tweets[indexPath.row];
 
-        detailController.user = tweet.user;
+        detailController.user = self.cellTweet.user;
         detailController.didClick = true;
         
     }
     
     
 }
+
+- (Tweet *)getTweet:(Tweet *)tweet {
+    
+    self.cellTweet = tweet;
+    return tweet;
+}
+    
+
 
 - (void)didBack{
     
@@ -286,5 +301,10 @@ InfiniteScrollActivityView* loadingMoreView;
     }
 }
 
+    
 
-@end
+    
+    @end
+
+
+    
