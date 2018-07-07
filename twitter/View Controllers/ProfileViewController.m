@@ -41,6 +41,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self.profileView setSeparatorColor:[UIColor colorWithRed:0.00 green:0.67 blue:0.93 alpha:1.0]];
+
+    
     self.profileView.dataSource = self;
     self.profileView.delegate = self;
     

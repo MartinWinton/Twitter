@@ -1,12 +1,12 @@
 //
-//  TweetCell.m
+//  MediaCell.m
 //  twitter
 //
-//  Created by Martin Winton on 7/2/18.
+//  Created by Martin Winton on 7/6/18.
 //  Copyright © 2018 Emerson Malca. All rights reserved.
 //
 
-#import "TweetCell.h"
+#import "MediaCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "APIManager.h"
 #import "DateTools.h"
@@ -14,32 +14,11 @@
 #import "NumberFormatter.h"
 #import "FavoriteRetweetHelper.h"
 #import "ProfileViewController.h"
+@interface MediaCell ()<FavoriteRetweetHelperDelegate>
 
-@interface TweetCell ()<FavoriteRetweetHelperDelegate>
-@property (weak, nonatomic) IBOutlet UILabel *retweetedByLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *retweetedByImage;
 @property (nonatomic,strong)  FavoriteRetweetHelper *helper;
-
 @end
-@implementation TweetCell
-
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon"] forState : UIControlStateNormal];
-    [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon-red"] forState : UIControlStateSelected];
-       [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon-red"] forState : UIControlStateHighlighted];
-    
-    
-    
-    
-    
-}
-
-- (IBAction)didTapButton:(id)sender {
-    [self.delegate getTweet:self.tweet];
-}
-
-
+@implementation MediaCell
 
 - (IBAction)didTapFavorite:(id)sender {
     
@@ -60,58 +39,52 @@
     
 }
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    // Initialization code
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+
 -(void) refreshData {
     
-    /*
-    if(self.tweet.imageURL != nil){
-        
-        [self.mediaImage setImageWithURL:self.tweet.imageURL];
-        self.mediaImage.image = nil;
-        self.mediaImage.frame = CGRectMake(91, 78, 269, 130);
-        self.mediaImage.center =self.mediaImage.superview.center;
-
-    }
     
-    else{
-        self.mediaImage.image = nil;
-        self.mediaImage.frame = CGRectMake(0, 0, 0, 0);
-        self.mediaImage.center =self.mediaImage.superview.center;
-        
-    }
+     if(self.tweet.imageURL != nil){
      
-     */
+     [self.mediaImg setImageWithURL:self.tweet.imageURL];
+    
+     }
+     
+     else{
+     self.mediaImg.image = nil;
+     
+     }
+     
+     
     
     self.tweetUsername.text = self.tweet.user.name;
-    self.tweetLabel.text = self.tweet.text;
+    self.tweetText.text = self.tweet.text;
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     // Configure the input format to parse the date string
     formatter.dateFormat = @"E MMM d HH:mm:ss Z y";
     // Convert String to Date
     NSDate *date = [formatter dateFromString:self.tweet.createdAtString];
-    self.tweetDate.text = [NSString stringWithFormat:@"%@%@", @"· ", date.shortTimeAgoSinceNow];
+    self.tweetTime.text = [NSString stringWithFormat:@"%@%@", @"· ", date.shortTimeAgoSinceNow];
     
     
-    self.screenName.text = [NSString stringWithFormat:@"%@%@", @"@", self.tweet.user.screenName];
+    self.tweetScreen.text = [NSString stringWithFormat:@"%@%@", @"@", self.tweet.user.screenName];
     
-    if(self.tweet.retweetedByUser != nil && ![self.tweet.user.screenName isEqualToString:self.tweet.retweetedByUser.screenName] && ![self.tweet.user.name isEqualToString:self.tweet.retweetedByUser.name]){
-        
-        self.retweetedByLabel.text= [NSString stringWithFormat:@"%@%@", self.tweet.retweetedByUser.name, @" Retweeted"];
-        
-        [self.retweetedByImage setImage:[UIImage imageNamed:@"retweet-icon-green"]];
-        
-    }
-    else{
-        
-        self.retweetedByLabel.text = @"";
-        self.retweetedByImage.image = nil;
-
-        
-    }
+ 
     
     
     self.retweetCount.text = [NumberFormatter suffixNumber:[NSNumber numberWithInt:self.tweet.retweetCount]];
-     self.favorCount.text = [NumberFormatter suffixNumber:[NSNumber numberWithInt:self.tweet.favoriteCount]];
+    self.favoriteCount.text = [NumberFormatter suffixNumber:[NSNumber numberWithInt:self.tweet.favoriteCount]];
     
     self.profileImage.image = nil;
     self.profileImage.layer.cornerRadius = self.profileImage.frame.size.width/2;
@@ -124,7 +97,7 @@
     if(self.tweet.favorited){
         
         [self.favoriteButton setSelected:YES];
-        self.favorCount.textColor = [UIColor redColor];
+        self.favoriteCount.textColor = [UIColor redColor];
         
         
         
@@ -133,7 +106,7 @@
     else{
         
         [self.favoriteButton setSelected:NO];
-        self.favorCount.textColor = [UIColor lightGrayColor];
+        self.favoriteCount.textColor = [UIColor lightGrayColor];
         
         
         
@@ -160,24 +133,16 @@
     }
     
     
-    
+
     
     
 }
-    
-    
-
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+- (IBAction)didTapButton:(id)sender {
+    [self.delegate getTweet:self.tweet];
 }
 
 - (void)setTweet:(Tweet *)tweet{
-    // Since we're replacing the default setter, we have to set the underlying private storage _movie ourselves.
-    // _movie was an automatically declared variable with the @propery declaration.
-    // You need to do this any time you create a custom setter.
+    
     _tweet = tweet;
     
     self.helper = [[FavoriteRetweetHelper alloc] initWithTweet:self.tweet];
@@ -186,9 +151,6 @@
     
     [self refreshData];
 }
-    
-
-
 
 - (void)didFailFavorite {
     
@@ -225,12 +187,7 @@
     }
     
     [self refreshData];
-
+    
     
 }
-
-
-
-
-
 @end

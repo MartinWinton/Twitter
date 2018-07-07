@@ -49,6 +49,8 @@ InfiniteScrollActivityView* loadingMoreView;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self.tweetView setSeparatorColor:[UIColor colorWithRed:0.00 green:0.67 blue:0.93 alpha:1.0]];
+    
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(beginRefresh:) forControlEvents:UIControlEventValueChanged];
     [self.tweetView insertSubview:refreshControl atIndex:0];
@@ -101,15 +103,37 @@ InfiniteScrollActivityView* loadingMoreView;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     
-    TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetCell"];
-    
-    cell.delegate = self;
     
     Tweet *tweet  = self.tweets[indexPath.row];
     
-    cell.tweet = tweet;
-
-    return cell;
+    if(tweet.imageURL != nil){
+        
+        
+        TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"media"];
+        
+        cell.delegate = self;
+        cell.tweet = tweet;
+        
+        return cell;
+        
+        
+        
+    }
+    
+    else{
+        
+        TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetCell"];
+        
+        cell.delegate = self;
+        cell.tweet = tweet;
+        
+        return cell;
+        
+        
+        
+    }
+    
+  
 }
 
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
