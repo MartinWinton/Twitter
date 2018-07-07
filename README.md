@@ -61,30 +61,31 @@ The following **additional** features are implemented:
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1.
-2.
+1. How did people implement the Profile View? Did they use the same tweet cell?
+2. Including headers to tweet (Tweet is in reply to, User retweeted this tweet)
 
 ## Video Walkthrough
 
-Here's a walkthrough of infinite scrolling, refreshing and overall app functionality
+Here's a walkthrough of infinite scrolling, refreshing and overall app functionality:
 
 <img src='Gifs/TwitterMain.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-Here's a walkthrough of  all the autolayout views
 
-<img src='Gifs/TwitterAutoLayout.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />Here's a walkthrough of implemented user stories:
+Here's a walkthrough of composing and replying:
 
-Here's a walkthrough of composing and replying
-
-<img src='Gifs/TwitterComposing.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />Here's a walkthrough of implemented user stories:
+<img src='Gifs/TwitterComposing.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
-Here's a walkthrough of the profile tab.
+Here's a walkthrough of  all the autolayout views:
+
+<img src='Gifs/TwitterAutoLayout.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+
+Here's a walkthrough of the profile tab.:
 
 <img src='Gifs/TwitterMyProfile.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-Here's a walkthrough of like and retweets, including likes resetting if twitter api does not accept like for any reason
-
+Here's a walkthrough of like and retweets, including likes resetting if Twitter api does not accept like for any reason:
 
 <img src='Gifs/TwitterLikes.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
@@ -92,13 +93,14 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
-
+Keeping track of all the view controllers was difficult
 ## Credits
 
 List an 3rd party libraries, icons, graphics, or other assets you used in your app.
 
 - [AFNetworking](https://github.com/AFNetworking/AFNetworking) - networking task library
+- [DateTools] (https://github.com/MatthewYork/DateTools) - tool for formatting dates
+
 
 ## License
 
