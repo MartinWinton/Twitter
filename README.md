@@ -89,7 +89,7 @@ Here's a walkthrough of like and retweets, including likes resetting if Twitter 
 
 <img src='Gifs/TwitterLikes.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-GIF created with [LiceCap](http://www.cockos.com/licecap/).
+GIFs created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
@@ -99,7 +99,7 @@ Keeping track of all the view controllers was difficult
 List an 3rd party libraries, icons, graphics, or other assets you used in your app.
 
 - [AFNetworking](https://github.com/AFNetworking/AFNetworking) - networking task library
-- [DateTools] (https://github.com/MatthewYork/DateTools) - tool for formatting dates
+- [DateTools](https://github.com/MatthewYork/DateTools) - tool for formatting dates
 
 
 ## License
