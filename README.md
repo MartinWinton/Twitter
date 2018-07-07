@@ -1,8 +1,8 @@
-# Project 4 - *Name of App Here*
+# Project 4 - *Twitte*r
 
-**Name of your app** is a basic twitter app to read and compose tweets the [Twitter API](https://apps.twitter.com/).
+**Twitter** is a basic twitter app to read and compose tweets the [Twitter API](https://apps.twitter.com/).
 
-Time spent: **X** hours spent in total
+Time spent: **27** hours spent in total
 
 ## User Stories
 
@@ -54,6 +54,7 @@ The following **additional** features are implemented:
 - [x] Profile pics are medium quality for optimal choice between loading and clarity
 - [x] On timelines and users' profile pages retweets by the user are shown
 - [x] Users can tap on profiles and tweet details on any profile page
+- [x] Tweets with media align with autolayout
 
 
 
@@ -65,29 +66,24 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 ## Video Walkthrough
 
-Here's a walkthrough of implemented user stories:
+Here's a walkthrough of infinite scrolling, refreshing and overall app functionality
 
 <img src='Gifs/TwitterMain.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-Here's a walkthrough of implemented user stories:
+Here's a walkthrough of  all the autolayout views
 
 <img src='Gifs/TwitterAutoLayout.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />Here's a walkthrough of implemented user stories:
 
+Here's a walkthrough of composing and replying
+
 <img src='Gifs/TwitterComposing.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />Here's a walkthrough of implemented user stories:
 
-<img src='Gifs/TwitterDetailViewProfile.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />'
 
-implemented user stories:
+Here's a walkthrough of the profile tab.
 
 <img src='Gifs/TwitterMyProfile.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-Here's a walkthrough of implemented user stories:
-
-<img src='Gifs/TwitterFunctions.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
-GIF created with [LiceCap](http://www.cockos.com/licecap/).
-
-Here's a walkthrough of implemented user stories:
+Here's a walkthrough of like and retweets, including likes resetting if twitter api does not accept like for any reason
 
 
 <img src='Gifs/TwitterLikes.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
