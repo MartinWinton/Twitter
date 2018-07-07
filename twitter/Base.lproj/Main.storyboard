@@ -50,7 +50,7 @@
                         <viewLayoutGuide key="safeArea" id="osx-NC-afp"/>
                     </view>
                     <connections>
-                        <segue destination="p4J-ZQ-iCc" kind="presentation" id="h5R-YL-H0O"/>
+                        <segue destination="p4J-ZQ-iCc" kind="presentation" identifier="loginSegue" id="h5R-YL-H0O"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hKJ-HH-8tn" sceneMemberID="firstResponder"/>
