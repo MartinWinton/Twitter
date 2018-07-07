@@ -89,6 +89,10 @@ Here's a walkthrough of like and retweets, including likes resetting if Twitter 
 
 <img src='Gifs/TwitterLikes.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
+Login/Logoff
+<img src='Gifs/logoff.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+
 GIFs created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
