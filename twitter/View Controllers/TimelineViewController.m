@@ -52,11 +52,13 @@ InfiniteScrollActivityView* loadingMoreView;
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(beginRefresh:) forControlEvents:UIControlEventValueChanged];
     [self.tweetView insertSubview:refreshControl atIndex:0];
+    // create refresh control and insert at top of tableview
     
     CGRect frame = CGRectMake(0, self.tweetView.contentSize.height, self.tweetView.bounds.size.width, InfiniteScrollActivityView.defaultHeight);
     loadingMoreView = [[InfiniteScrollActivityView alloc] initWithFrame:frame];
     loadingMoreView.hidden = true;
     [self.tweetView addSubview:loadingMoreView];
+    // add infinite scrolling view as subview at bottom of tablview, set it to hidden
     
     UIEdgeInsets insets = self.tweetView.contentInset;
     insets.bottom += InfiniteScrollActivityView.defaultHeight;
@@ -75,6 +77,7 @@ InfiniteScrollActivityView* loadingMoreView;
             
             self.tweets = tweets;
             [self.tweetView reloadData];
+            // get starter timeline and reload table
 
             
        
@@ -98,30 +101,16 @@ InfiniteScrollActivityView* loadingMoreView;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     
-    
-    
     TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetCell"];
     
     cell.delegate = self;
     
-    
     Tweet *tweet  = self.tweets[indexPath.row];
     
     cell.tweet = tweet;
-    
-    
-    
 
-    
-    
-   
     return cell;
 }
-
-
-
-
-
 
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -144,11 +133,13 @@ InfiniteScrollActivityView* loadingMoreView;
             self.tweets = tweets;
             [self.tweetView reloadData];
             [refreshControl endRefreshing];
+            
+            // if tweets are acquired, update tweets and end refreshing indicator
 
             
             
         } else {
-            NSLog(@"😫😫😫 Error getting home timeline: %@", error.localizedDescription);
+            NSLog(@"😫😫😫 Error refreshing timeline: %@", error.localizedDescription);
         }
     }];
     
@@ -162,12 +153,14 @@ InfiniteScrollActivityView* loadingMoreView;
     // Get timeline
     
     self.lastTweet   = [self.tweets objectAtIndex:self.tweets.count-1];
+    // get most oldest tweet, i.e. end of timeline
 
     [[APIManager shared]  getmoreTweetsWithMaxID:(NSString *)self.lastTweet.idStr Completion:^(NSMutableArray *tweets, NSError *error){
         if (tweets) {
             
             
             self.isMoreDataLoading = NO;
+            // to prevent calling function more than once
             
             
             for(int i = 0; i < tweets.count; i++) {
@@ -212,6 +205,7 @@ InfiniteScrollActivityView* loadingMoreView;
         ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
         composeController.delegate = self;
         composeController.isReply = NO;
+        // becase we are composing from timeline we are not replying to a tweet
         NSLog(@"Compose Segue");
     }
     
@@ -222,36 +216,32 @@ InfiniteScrollActivityView* loadingMoreView;
         NSLog(@"Detail Segue");
         UITableViewCell *tappedCell = sender;
         NSIndexPath *indexPath = [self.tweetView indexPathForCell:tappedCell];
-        
-        
-        
         Tweet *tweet = self.tweets[indexPath.row];
-        
-        
-        
         detailController.tweet = tweet;
         detailController.delegate = self;
+        
+        //customary tableview cell tap code
         
     }
     
     else if([navigationController.topViewController isKindOfClass:[ProfileViewController class]]){
         
         
-        ProfileViewController *detailController = (ProfileViewController*)navigationController.topViewController;
+        ProfileViewController *profileViewController = (ProfileViewController*)navigationController.topViewController;
         
 
-        detailController.user = self.cellTweet.user;
-        detailController.didClick = true;
+        profileViewController.user = self.cellTweet.user;
+        profileViewController.didClick = true;
+        //we clicked on a profile pic instead of profile tab, we must tell the profileview controller this
         
     }
     
     
 }
 
-- (Tweet *)getTweet:(Tweet *)tweet {
+- (void)getTweet:(Tweet *)tweet {
     
     self.cellTweet = tweet;
-    return tweet;
 }
     
 

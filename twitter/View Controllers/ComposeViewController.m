@@ -24,11 +24,13 @@
     
     if(self.tweetView.text.length <= 140){
         
+        // if not too many charactewrs
+        
         if(self.isReply){
             
-    
-            
             NSString *replyText = [NSString stringWithFormat:@"%@%@%@%@", @"@", self.replyTweet.user.name, @" ", self.tweetView.text];
+            
+            // add @username to reply to work wit twitter api
             
             [[APIManager shared] postReplyWithText:replyText ID:self.replyTweet.idStr completion:^(Tweet *tweet, NSError *error) {
                 
@@ -41,11 +43,10 @@
                     NSLog(@"Successfully created  the following reply: %@", tweet.text);
                     [self dismissViewControllerAnimated:true completion:nil];
                     [self.delegate didTweet:tweet];
+                    // let delegate know that we posted tweet
                     
                 }
             }];
-            
-            
             
             
         }
@@ -68,11 +69,6 @@
             
         }
     }
-    
-    
-    
-
-
     
     
 }
@@ -104,105 +100,77 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-
-- (void)textViewDidChange:(UITextView *)textView{
+-(void)editLimitColorLogic{
     
-    
-    
-
-    
-    self.characterCount.text = [NSString stringWithFormat:@"%lu", (unsigned long)140-self.tweetView.text.length];
-    
-    
-     self.tweetButton.tintColor = [UIColor colorWithRed:0.11 green:0.58 blue:0.88 alpha:1.0];
-
-    if(self.tweetView.text.length >= 120){
-        
-        if(self.tweetView.text.length < 140){
-        
-         self.characterCount.textColor = [UIColor yellowColor];
-        }
-            
-            else{
-                  self.characterCount.textColor = [UIColor redColor];
-                
-                if(self.tweetView.text.length != 140){
-                    
-                    self.characterCount.text= [NSString stringWithFormat:@"%@%@", @"-", [NSString stringWithFormat:@"%lu", self.tweetView.text.length-140]];
-                    
-                    
-                    
-                    self.tweetButton.tintColor = [UIColor lightGrayColor];
-                    
-                    
-                    
-                    
-                }
-                
-             
-             
-                
-            }
-        
-        
-    
-}
-    
-    else{
-        
-        self.characterCount.textColor = [UIColor blackColor];
-
-        
-        
-    }
-    
-    
-    
-}
-
-- (void)textViewDidBeginEditing:(UITextView *)textView{
     
     
     
     self.characterCount.text = [NSString stringWithFormat:@"%lu", (unsigned long)140-self.tweetView.text.length];
     
-      self.tweetButton.tintColor = [UIColor colorWithRed:0.11 green:0.58 blue:0.88 alpha:1.0];
+    // get remaining characters in text box;
+    
+    
+    self.tweetButton.tintColor = [UIColor colorWithRed:0.11 green:0.58 blue:0.88 alpha:1.0];
+    // reset tweet button to blue each time
     
     if(self.tweetView.text.length >= 120){
         
         if(self.tweetView.text.length < 140){
             
             self.characterCount.textColor = [UIColor yellowColor];
+            // if in threshold, display warning with yellow
         }
         
         else{
             self.characterCount.textColor = [UIColor redColor];
+            // if out of threshold, show red
             
             if(self.tweetView.text.length != 140){
                 
-                       self.characterCount.text= [NSString stringWithFormat:@"%@%@", @"-", [NSString stringWithFormat:@"%lu", self.tweetView.text.length]];
+                // if out of threshold and not at exact capacity, show a negative number, and gray out button
+                
+                self.characterCount.text= [NSString stringWithFormat:@"%@%@", @"-", [NSString stringWithFormat:@"%lu", self.tweetView.text.length-140]];
+                
+                
+                
                 self.tweetButton.tintColor = [UIColor lightGrayColor];
-
                 
                 
-           
+                
                 
             }
-    
             
-       
+            
+            
+            
         }
+        
+        
+        
     }
     
     else{
         
-        self.characterCount.textColor = [UIColor blackColor];
+        self.characterCount.textColor = [UIColor whiteColor];
         
         
         
     }
     
+    
+    
+}
+
+- (void)textViewDidChange:(UITextView *)textView{
+    
+    [self editLimitColorLogic];
+
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView{
+    
+    [self editLimitColorLogic];
+
 }
 
 /*

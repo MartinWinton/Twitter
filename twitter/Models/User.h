@@ -18,6 +18,8 @@
 @property (strong, nonatomic) NSString *screenName;
 @property (strong, nonatomic) NSString *followersCountString;
 @property (strong, nonatomic) NSString *followingCountString;
+@property (strong, nonatomic) NSNumber *followerTest;
+
 @property (strong, nonatomic) NSString *tweetCountString;
 
 

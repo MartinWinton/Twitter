@@ -10,6 +10,8 @@
 #import "Tweet.h"
 #import "APIManager.h"
 
+//Helper module for retweeting/favorting in TweetDetailViewController and TimelineViewController
+
 @implementation FavoriteRetweetHelper
 
 - (instancetype)initWithTweet:(Tweet *)tweet {

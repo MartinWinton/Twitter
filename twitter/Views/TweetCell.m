@@ -17,12 +17,12 @@
 
 @interface TweetCell ()<FavoriteRetweetHelperDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *retweetedByLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *retweetedByImage;
 @property (nonatomic,strong)  FavoriteRetweetHelper *helper;
 
 @end
 @implementation TweetCell
-- (IBAction)didtap:(id)sender {
-}
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon"] forState : UIControlStateNormal];
@@ -76,10 +76,18 @@
     
     self.screenName.text = [NSString stringWithFormat:@"%@%@", @"@", self.tweet.user.screenName];
     
-    if(self.tweet.retweetedByUser != nil){
+    if(self.tweet.retweetedByUser != nil && ![self.tweet.user.screenName isEqualToString:self.tweet.retweetedByUser.screenName] && ![self.tweet.user.name isEqualToString:self.tweet.retweetedByUser.name]){
+        
         self.retweetedByLabel.text= [NSString stringWithFormat:@"%@%@", self.tweet.retweetedByUser.name, @" Retweeted"];
         
-      
+        [self.retweetedByImage setImage:[UIImage imageNamed:@"retweet-icon-green"]];
+        
+    }
+    else{
+        
+        self.retweetedByLabel.text = @"";
+        self.retweetedByImage.image = nil;
+
         
     }
     

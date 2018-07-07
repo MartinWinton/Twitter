@@ -10,10 +10,13 @@
 #import "APIManager.h"
 #import "TweetCell.h"
 #import "ProfileCell.h"
+#import "TweetDetailViewController.h"
 
-@interface ProfileViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface ProfileViewController () <UITableViewDataSource, UITableViewDelegate, TweetCellDelegate, TweetDetailViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *profileView;
 @property (nonatomic,strong) NSMutableArray *cells;
+@property (assign, nonatomic) Tweet *cellTweet;
+
 
 
 @end
@@ -24,6 +27,13 @@
     [self dismissViewControllerAnimated:true completion:nil];
 
     
+    
+    
+}
+
+- (void)didBack{
+    
+    [self.profileView reloadData];
     
     
 }
@@ -41,8 +51,11 @@
         [self getFeed];
         
     }
+    // if we clicked on the profile, this means user was already set, so we can add it to the table and refresh
     
     else{
+        
+        // otherwise we are on the main user page, and we can simply call the api request
     
     
     [[APIManager shared] getMainUserWithCompletion:^(User *user, NSError *error) {
@@ -54,14 +67,8 @@
             
             [self.profileView reloadData];
             
-            
-            
-
-            
             [self getFeed];
 
-            
-            
         }
         
         else {
@@ -72,10 +79,6 @@
         
     }
     
-  
-    
-    
-
      
     // Do any additional setup after loading the view.
 }
@@ -83,7 +86,6 @@
 -(void)getFeed{
     
     [[APIManager shared] getUserTimelineFromUser:self.user withCompletion:^(NSMutableArray *tweets, NSError *error) {
-        
         
         
         if (tweets) {
@@ -95,8 +97,6 @@
             }
             
             [self.profileView reloadData];
-            
-            
             
             
         } else {
@@ -119,51 +119,32 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-    
-    
     if([self.cells[indexPath.row] isKindOfClass:[Tweet class]]){
         
-        
-        
         TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Feed"];
-        
         Tweet *tweet  = self.cells[indexPath.row];
-        
+        cell.delegate = self;
         cell.tweet = tweet;
-        
         return cell;
 
-
-        
-        
-        
-        
     }
     
     else {
             
             ProfileCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Profile"];
-            
             User *user  = self.cells[indexPath.row];
-            
             cell.user = user;
-        
             return cell;
-            
-
-        
         
     }
-        
-    
-    
     
 }
 
 
-
-
+- (void)getTweet:(Tweet *)tweet {
+    
+    self.cellTweet = tweet;
+}
 
 
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -177,14 +158,38 @@
 }
 
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+       UINavigationController *navigationController = [segue destinationViewController];
+     if([navigationController.topViewController isKindOfClass:[ProfileViewController class]]){
+        
+        ProfileViewController *detailController = (ProfileViewController*)navigationController.topViewController;
+        
+        detailController.user = self.cellTweet.user;
+        detailController.didClick = true;
+        
+    }
+    
+     else if([navigationController.topViewController isKindOfClass:[TweetDetailViewController class]]){
+         
+         
+         TweetDetailViewController *detailController = (TweetDetailViewController*)navigationController.topViewController;
+         NSLog(@"Detail Segue");
+         UITableViewCell *tappedCell = sender;
+         NSIndexPath *indexPath = [self.profileView indexPathForCell:tappedCell];
+         Tweet *tweet = self.cells[indexPath.row];
+         detailController.tweet = tweet;
+         detailController.delegate = self;
+         
+         //customary tableview cell tap code
+         
+     }
 }
-*/
+
 
 @end

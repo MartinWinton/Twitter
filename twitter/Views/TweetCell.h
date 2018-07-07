@@ -12,7 +12,7 @@
 
 @protocol TweetCellDelegate
 
-- (Tweet*)getTweet:(Tweet *)tweet;
+- (void)getTweet:(Tweet *)tweet;
 
 @end
 

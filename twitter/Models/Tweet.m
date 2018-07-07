@@ -41,11 +41,6 @@
         self.createdAtString = createdAtOriginalString;
    
         
-      
-  
-        
-        
-        
     }
     return self;
     

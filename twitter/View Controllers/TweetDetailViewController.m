@@ -41,7 +41,6 @@
     self.helper = [[FavoriteRetweetHelper alloc] initWithTweet:self.tweet];
     self.helper.delegate = self;
     
-    
     [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon"] forState : UIControlStateNormal];
     [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon-red"] forState : UIControlStateSelected];
     [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon-red"] forState : UIControlStateHighlighted];
@@ -49,14 +48,16 @@
     
     
     self.tweetUsernameLabel.text = self.tweet.user.name;
-    
     self.tweetBody.text = self.tweet.text;
+    
     self.tweetScreen.text = [NSString stringWithFormat:@"%@%@", @"@", self.tweet.user.screenName];
+    // add @ symbol to screen name
     
     
     
     self.tweetPic.layer.cornerRadius = self.tweetPic.frame.size.width/2;
     self.tweetPic.clipsToBounds = YES;
+    // make pictures circulular
     
     self.tweetPic.image = nil;
     if (self.tweet.user.profileImageURL != nil) {
@@ -71,6 +72,7 @@
     
     formatter.dateStyle = NSDateFormatterShortStyle;
     formatter.timeStyle = NSDateFormatterShortStyle;
+    // add time and date to NSDate
     
     self.tweetTime.text = [formatter stringFromDate:date];
     
@@ -84,6 +86,7 @@
     
     self.numretweets.text = [NumberFormatter suffixNumber:[NSNumber numberWithInt:self.tweet.retweetCount]];
     self.numfavs.text = [NumberFormatter suffixNumber:[NSNumber numberWithInt:self.tweet.favoriteCount]];
+    // format number to shorten them
 
     if(self.tweet.favorited){
         
@@ -146,12 +149,16 @@
 -(void)didTweet:(Tweet *)tweet{
     
     [self refreshData];
+    [self.delegate didBack];
+
     
     
 }
 
 
 - (void)didFailFavorite {
+    
+    //reset tweet data if favorite/unfavorite failed
     
     if(self.tweet.favorited){
         
@@ -172,6 +179,9 @@
 }
 
 - (void)didFailRetweet {
+    
+    //reset tweet data if retweet/unretweet failed
+
     
     if(self.tweet.retweeted){
         

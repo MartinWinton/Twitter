@@ -19,9 +19,17 @@
         self.verified = [dictionary[@"verified"] boolValue];
         
 
+      
         
-        self.followersCountString = [NumberFormatter suffixNumber:[NSNumber numberWithInt:dictionary[@"followers_count"]]];
-      self.followingCountString = [NumberFormatter suffixNumber:[NSNumber numberWithInt:dictionary[@"friends_count"]]];
+        long followers  = [dictionary[@"followers_count"] integerValue];
+        
+        self.followersCountString = [NumberFormatter suffixNumber:[NSNumber numberWithLong:followers]];
+        
+        long following  = [dictionary[@"friends_count"] integerValue];
+
+        
+     
+      self.followingCountString = [NumberFormatter suffixNumber:[NSNumber numberWithLong:following]];
         self.tweetCountString = [ NSString stringWithFormat:@"%@",dictionary[@"statuses_count"]];
         
 
@@ -33,7 +41,9 @@
 
 
         self.screenName = dictionary[@"screen_name"];
-        self.profileImageURL = [NSURL URLWithString:dictionary[@"profile_image_url_https"]];
+        self.profileImageURL = [NSURL  URLWithString:[dictionary[@"profile_image_url_https"] stringByReplacingOccurrencesOfString:@"_normal" withString:@"_bigger"]];
+        
+        
          self.bannerURL = [NSURL URLWithString:dictionary[@"profile_banner_url"]];
     }
     return self;

@@ -51,6 +51,11 @@ The following **additional** features are implemented:
 - [x] If user is verified, a verified symbol is shown on their profile page
 - [x] User header and feed are seperate cells allowing for smooth scrolling similar to actual Twitter app
 - [x] # followers, retweets favs, etc are shortened using when in thousands
+- [x] Profile pics are medium quality for optimal choice between loading and clarity
+- [x] On timelines and users' profile pages retweets by the user are shown
+- [x] Users can tap on profiles and tweet details on any profile page
+
+
 
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
