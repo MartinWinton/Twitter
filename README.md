@@ -75,7 +75,13 @@ Here's a walkthrough of implemented user stories:
 
 <img src='Gifs/TwitterComposing.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />Here's a walkthrough of implemented user stories:
 
-<img src='Gifs/TwitterDetailViewProfile.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='Gifs/TwitterDetailViewProfile.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />'
+
+implemented user stories:
+
+<img src='Gifs/TwitterMyProfile' title='Video Walkthrough' width='' alt='Video Walkthrough' />Here's a walkthrough of implemented user stories:
+
+<img src='Gifs/TwitterFunctions' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
